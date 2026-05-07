@@ -10,15 +10,14 @@ import {
   TiChevronLeftOutline,
 } from "react-icons/ti";
 
-SONG_SRC = null;
 
 export default function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currTime, setCurrTime] = useState({ min: "0", sec: "00" });
-  const [totatl0ime, setTotalTime] = useState({ min: "0", sec: "00" });
+  const [totalTime, setTotalTime] = useState({ min: "0", sec: "00" });
   const [seconds, setSeconds] = useState(0);
   
-  const [play, { pause, stop, duration, sound }] = useSound(SONG_SRC); //Add mp3 here
+  const [play, { pause, stop, duration, sound }] = useSound(null); //Add mp3 here
 
   useEffect(() => {
     if (duration) {
