@@ -1,37 +1,50 @@
-import { useEffect, useState } from "react"
-import useSound from "use-sound"
+import { useEffect, useState } from "react";
+import useSound from "use-sound";
 // Import audio file
 // Set up playlist import?
-import { TiMediaStopOutline, TiMediaPlayOutline, TiMediaPauseOutline, TiChevronRightOutline, TiChevronLeftOutline } from "react-icons/ti";
-import { iconContext } from "react-icons"
+import {
+  TiMediaStopOutline,
+  TiMediaPlayOutline,
+  TiMediaPauseOutline,
+  TiChevronRightOutline,
+  TiChevronLeftOutline,
+} from "react-icons/ti";
 
-const [isPlaying, setIsPlaying] = useState(false)
-const [play, { pause, duration, sound}] = useSound(null) //Add mp3 here
+SONG_SRC = null;
 
-const [currTime, setCurrTime] = useState({ min: "", sec: ""})
-const [seconds, setSeconds] = useState()
+export default function MusicPlayer() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currTime, setCurrTime] = useState({ min: "0", sec: "00" });
+  const [totatl0ime, setTotalTime] = useState({ min: "0", sec: "00" });
+  const [seconds, setSeconds] = useState(0);
+  
+  const [play, { pause, stop, duration, sound }] = useSound(SONG_SRC); //Add mp3 here
 
-useEffect(() => {
-    const sec = duration / 1000
-    const min = Math.floor(sec / 60)
-    const secRemain = Math.floor(sec % 60)
-    // const minRemain = Math.floor() add this feature
-    setCurrTime({ min, sec: secRemain})
-}, [duration])
-
-useEffect(() => {
-  const interval = setInterval(() => {
-    if (sound) {
-      setSeconds(sound.seek([]));
-      const min = Math.floor(sound.seek([]) / 60);
-      const sec = Math.floor(sound.seek([]) % 60);
-      setCurrTime({ min, sec });
+  useEffect(() => {
+    if (duration) {
+        const sec = duration / 1000
+        setTotalTime({
+            min: Math.floor(sec / 60),
+            sec: String(Math.floor(sec % 60)).padStart(2, "0")
+        })
     }
-  }, 1000);
-  return () => clearInterval(interval);
-}, [sound]);
+  }, [duration])
 
-const playBtn = () => {
+  useEffect(() => {
+    const interval = setInterval(() => {
+        if (sound) {
+            const pos = sound.seek([])
+            setSeconds(pos)
+            setCurrTime({
+                min: Math.floor(pos / 60),
+                sec: String(Math.floor(pos % 60)).padStart(2, "0")
+            })
+        }
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [sound])
+
+  const handlePlayPause = () => {
     if (isPlaying) {
         pause()
         setIsPlaying(false)
@@ -39,12 +52,48 @@ const playBtn = () => {
         play()
         setIsPlaying(true)
     }
-}
+  }
 
-export default function MusicPlayer() {
-    return(
-        <>
-        
-        </>
-    )
-} 
+  const handleStop = () => {
+    stop()
+    setIsPlaying(false)
+    setSeconds(0)
+    setCurrTime({ min: "0", sec: "00"})
+  }
+
+  return (
+    <div className="musicPlayerContainer">
+      <h2>Now Playing</h2>
+      <div className="titleTimeContainer">
+        <h3>Artist Name</h3>
+        <p>Track Title</p>
+
+        <div className="timeMeter">
+          <p>{currTime.min}:{currTime.sec}</p>
+          <p>{totalTime.min}:{totalTime.sec}</p>
+        </div>
+
+        <input
+          type="range"
+          min="0"
+          max={duration ? duration / 1000 : 0}
+          value={seconds}
+          className="timeline"
+          onChange={(e) => {
+            sound?.seek([Number(e.target.value)])
+            setSeconds(Number(e.target.value))
+          }}
+        />
+
+        <div className="controls">
+          <button><TiChevronLeftOutline /></button>
+          <button onClick={handleStop}><TiMediaStopOutline /></button>
+          <button onClick={handlePlayPause}>
+            {isPlaying ? <TiMediaPauseOutline /> : <TiMediaPlayOutline />}
+          </button>
+          <button><TiChevronRightOutline /></button>
+        </div>
+      </div>
+    </div>
+  );
+}
