@@ -63,7 +63,7 @@ export default function MusicPlayer() {
   return (
     <div className="musicPlayerContainer">
       <h2>Now Playing</h2>
-      <div className="titleTimeContainer">
+      <div className="playerTrackContainer">
         <h3>Artist Name</h3>
         <p>Track Title</p>
 
@@ -84,7 +84,7 @@ export default function MusicPlayer() {
           }}
         />
 
-        <div className="controls">
+        <div className="playerControls">
           <button><TiChevronLeftOutline /></button>
           <button onClick={handleStop}><TiMediaStopOutline /></button>
           <button onClick={handlePlayPause}>
