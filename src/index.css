@@ -1,0 +1,39 @@
+@font-face {
+  font-family: "Basic Manual";
+  src: url('/src/assets/fonts/SVBasicManual.ttf') format('truetype');
+  font-family: "Basic Manual Bold";
+  src: url('/src/assets/fonts/SVBasicManual-Bold.ttf') format('truetype');
+}
+
+:root {
+  font-family: "Basic Manual Bold";
+  line-height: 1.5;
+  font-weight: 400;
+  --main-light: rgb(215, 220, 224);
+  --main-dark: slategrey;
+
+
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--main-light);
+}
+
+
+
